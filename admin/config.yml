@@ -1,0 +1,38 @@
+# Use DecapBridge PKCE auth (required)
+backend:
+  name: git-gateway
+  repo: ismaelescalante-gif/Neurolumens
+  branch: main
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/5d16232b-458f-41ab-9e54-b8076713a494/pkce
+  auth_token_endpoint: /sites/5d16232b-458f-41ab-9e54-b8076713a494/token
+  gateway_url: https://gateway.decapbridge.com
+
+media_folder: images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: blog
+    label: Blog
+    folder: _posts
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - label: Título
+        name: title
+        widget: string
+      - label: Fecha
+        name: date
+        widget: datetime
+      - label: Categoría
+        name: category
+        widget: select
+        options: ["TMS", "Salud mental", "Neurociencias", "Casos de éxito"]
+      - label: Imagen destacada
+        name: thumbnail
+        widget: image
+        required: false
+      - label: Contenido
+        name: body
+        widget: markdown

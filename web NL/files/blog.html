@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | NeuroLumens — Estimulación Magnética Transcraneal Puebla</title>
+  <meta name="description" content="Artículos sobre estimulación magnética transcraneal, salud mental y neurociencias del equipo de NeuroLumens en Puebla." />
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/de2t5oifa/image/upload/q_auto/f_auto/v1780865700/Logo_png_sbjrmk.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Marked.js para renderizar Markdown -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #fff; color: #2d2035; line-height: 1.7; }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    .nav {
+      position: sticky; top: 0; z-index: 900;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid #e8e0f0;
+    }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 56px; max-width: 1300px; margin: 0 auto; gap: 32px;
+    }
+    .nav__logo { flex-shrink: 0; }
+    .nav__logo img { height: 28px; width: auto; display: block; }
+    .nav__links { display: flex; align-items: center; gap: 28px; list-style: none; flex: 1; justify-content: center; }
+    .nav__links a { font-size: .84rem; color: #5a4a6a; transition: color .2s; white-space: nowrap; }
+    .nav__links a:hover, .nav__links a.active { color: #c4a5ce; }
+    .nav__cta {
+      background: #c4a5ce; color: #fff; font-size: .82rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase; padding: 11px 24px;
+      border-radius: 4px; white-space: nowrap; transition: background .2s;
+    }
+    .nav__cta:hover { background: #b090bc; }
+    @media (max-width: 900px) { .nav__links { display: none; } .nav__inner { padding: 14px 24px; } }
+
+    /* HERO BLOG */
+    .blog-hero {
+      background: #f2edf4;
+      padding: 64px 72px 48px;
+      text-align: center;
+    }
+    .blog-hero__tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase; color: #9b7aaa;
+      background: rgba(196,165,206,.2); padding: 6px 16px; border-radius: 100px; margin-bottom: 16px;
+    }
+    .blog-hero__title {
+      font-family: Georgia, serif; font-size: 3rem; font-weight: 400;
+      color: #2d2035; line-height: 1.15; margin-bottom: 12px;
+    }
+    .blog-hero__title em { font-style: italic; color: #c4a5ce; }
+    .blog-hero__lead { font-size: .97rem; color: #5a4a6a; font-weight: 300; max-width: 520px; margin: 0 auto; }
+
+    /* FILTERS */
+    .blog-filters {
+      background: #fff; border-bottom: 1px solid #e8e0f0;
+      padding: 20px 72px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    }
+    .filter-btn {
+      font-size: .82rem; padding: 7px 20px; border-radius: 100px;
+      background: #f2edf4; color: #5a4a6a; border: 1px solid #e8e0f0;
+      cursor: pointer; transition: all .2s; font-family: inherit;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: #c4a5ce; color: #fff; border-color: #c4a5ce;
+    }
+
+    /* GRID */
+    .blog-main { max-width: 1100px; margin: 0 auto; padding: 56px 72px; }
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .blog-card {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      border: 1px solid #e8e0f0; transition: transform .2s, box-shadow .2s;
+      cursor: pointer; display: flex; flex-direction: column;
+    }
+    .blog-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(196,165,206,.25); }
+    .blog-card__img { width: 100%; height: 200px; object-fit: cover; display: block; background: #e8e0f0; }
+    .blog-card__img-placeholder {
+      width: 100%; height: 200px; background: linear-gradient(135deg, #e8e0f0, #d4c8e4);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .blog-card__body { padding: 24px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .blog-card__category { font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #c4a5ce; }
+    .blog-card__title { font-family: Georgia, serif; font-size: 1.15rem; font-weight: 400; color: #2d2035; line-height: 1.4; flex: 1; }
+    .blog-card__date { font-size: .78rem; color: #9a85a8; font-weight: 300; }
+    .blog-card--skeleton {
+      height: 360px; background: linear-gradient(90deg, #e8e0f0 25%, #f0eaf6 50%, #e8e0f0 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite; border: none;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* ARTICLE VIEW */
+    .article-view { display: none; max-width: 760px; margin: 0 auto; padding: 56px 72px; }
+    .article-view.visible { display: block; }
+    .article-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #c4a5ce; font-size: .88rem; margin-bottom: 32px; cursor: pointer; transition: color .2s;
+    }
+    .article-back:hover { color: #9b7aaa; }
+    .article-category { font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #c4a5ce; margin-bottom: 12px; }
+    .article-title { font-family: Georgia, serif; font-size: 2.4rem; font-weight: 400; color: #2d2035; line-height: 1.2; margin-bottom: 12px; }
+    .article-date { font-size: .82rem; color: #9a85a8; margin-bottom: 32px; }
+    .article-img { width: 100%; border-radius: 16px; margin-bottom: 32px; }
+    .article-divider { width: 48px; height: 2px; background: #c4a5ce; margin-bottom: 32px; }
+    .article-body { font-size: 1rem; color: #4a3f60; font-weight: 300; line-height: 1.85; }
+    .article-body h1,.article-body h2,.article-body h3 { font-family: Georgia, serif; font-weight: 400; color: #2d2035; margin: 28px 0 12px; }
+    .article-body h2 { font-size: 1.6rem; }
+    .article-body h3 { font-size: 1.2rem; }
+    .article-body p { margin-bottom: 16px; }
+    .article-body strong { color: #2d2035; font-weight: 500; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin-bottom: 16px; }
+    .article-body li { margin-bottom: 8px; }
+    .article-body blockquote {
+      border-left: 3px solid #c4a5ce; padding: 14px 20px;
+      background: rgba(196,165,206,.08); font-style: italic; color: #5a4a6a;
+      margin: 24px 0; border-radius: 0 6px 6px 0;
+    }
+
+    /* EMPTY */
+    .blog-empty { text-align: center; padding: 80px 24px; color: #9a85a8; }
+    .blog-empty p { font-size: 1rem; font-weight: 300; }
+
+    /* FOOTER */
+    .footer { background: #1e1728; color: rgba(255,255,255,.55); padding: 40px 72px 24px; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .8rem; flex-wrap: wrap; gap: 12px;
+    }
+    .footer__legal { display: flex; gap: 20px; }
+    .footer__legal a { color: rgba(255,255,255,.55); transition: color .2s; }
+    .footer__legal a:hover { color: #c4a5ce; }
+
+    /* POWERED BY */
+    .powered { background: #16111f; padding: 12px 0; text-align: center; border-top: 1px solid rgba(255,255,255,.05); }
+    .powered__link { display: inline-flex; align-items: center; gap: 8px; opacity: .45; transition: opacity .2s; }
+    .powered__link:hover { opacity: .8; }
+    .powered__link span { font-size: .72rem; color: rgba(255,255,255,.7); letter-spacing: .06em; }
+    .powered__link img { height: 18px; width: auto; filter: brightness(0) invert(1); }
+
+    @media (max-width: 900px) {
+      .blog-hero { padding: 48px 24px 32px; }
+      .blog-filters { padding: 16px 24px; }
+      .blog-main { padding: 40px 24px; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .article-view { padding: 40px 24px; }
+      .footer { padding: 32px 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">
+        <img src="https://res.cloudinary.com/de2t5oifa/image/upload/q_auto/f_auto/v1780865691/Nombre_png_vdojx4.png" alt="NeuroLumens" />
+      </a>
+      <ul class="nav__links">
+        <li><a href="/#que-es">¿Qué es TMS?</a></li>
+        <li><a href="/#como-funciona">Cómo funciona</a></li>
+        <li><a href="/#condiciones">Condiciones</a></li>
+        <li><a href="/#quienes-somos">Nosotros</a></li>
+        <li><a href="/#testimonios">Testimonios</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+        <li><a href="/#ubicacion">Ubicación</a></li>
+        <li><a href="/blog.html" class="active">Blog</a></li>
+      </ul>
+      <a class="nav__cta" href="https://wa.me/522213580031?text=Hola%2C%20quiero%20información%20sobre%20TMS" target="_blank" rel="noopener">Contáctanos</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="blog-hero" id="blog-list-header">
+    <span class="blog-hero__tag">Conocimiento</span>
+    <h1 class="blog-hero__title">Blog <em>NeuroLumens</em></h1>
+    <p class="blog-hero__lead">Artículos sobre TMS, salud mental y neurociencias escritos por nuestro equipo especializado en Puebla.</p>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="blog-filters" id="blog-filters">
+    <button class="filter-btn active" onclick="filterPosts('all', this)">Todos</button>
+    <button class="filter-btn" onclick="filterPosts('TMS', this)">TMS</button>
+    <button class="filter-btn" onclick="filterPosts('Salud mental', this)">Salud mental</button>
+    <button class="filter-btn" onclick="filterPosts('Neurociencias', this)">Neurociencias</button>
+    <button class="filter-btn" onclick="filterPosts('Casos de éxito', this)">Casos de éxito</button>
+  </div>
+
+  <!-- GRID -->
+  <div class="blog-main" id="blog-list">
+    <div class="blog-grid" id="blog-grid">
+      <div class="blog-card blog-card--skeleton"></div>
+      <div class="blog-card blog-card--skeleton"></div>
+      <div class="blog-card blog-card--skeleton"></div>
+    </div>
+  </div>
+
+  <!-- ARTICLE VIEW -->
+  <div class="article-view" id="article-view">
+    <div class="article-back" onclick="showList()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Volver al blog
+    </div>
+    <div class="article-category" id="article-category"></div>
+    <h1 class="article-title" id="article-title"></h1>
+    <div class="article-date" id="article-date"></div>
+    <img class="article-img" id="article-img" style="display:none;" />
+    <div class="article-divider"></div>
+    <div class="article-body" id="article-body"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__bottom">
+      <span>© 2025 NeuroLumens. Todos los derechos reservados.</span>
+      <div class="footer__legal">
+        <a href="#">Aviso de privacidad</a>
+        <a href="#">Términos de uso</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="powered">
+    <a href="https://innersiah.com" target="_blank" rel="noopener" class="powered__link">
+      <span>Powered by</span>
+      <img src="https://res.cloudinary.com/de2t5oifa/image/upload/q_auto/f_auto/v1779391966/logo_innersiah_ro1d58.svg" alt="Innersiah" />
+    </a>
+  </div>
+
+  <script>
+    const REPO = 'ismaelescalante-gif/Neurolumens';
+    let allPosts = [];
+    let currentFilter = 'all';
+
+    async function loadPosts() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/_posts`);
+        if (!res.ok) throw new Error('no posts');
+        const files = await res.json();
+        const mdFiles = files.filter(f => f.name.endsWith('.md')).sort((a,b) => b.name.localeCompare(a.name));
+        if (mdFiles.length === 0) { showEmpty(); return; }
+
+        allPosts = await Promise.all(mdFiles.map(async f => {
+          const r = await fetch(f.download_url);
+          const text = await r.text();
+          const meta = parseFrontmatter(text);
+          const body = text.replace(/^---[\s\S]*?---\n/, '');
+          return { ...meta, body, slug: f.name.replace('.md','') };
+        }));
+
+        renderPosts(allPosts);
+
+        // Check URL for post param
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('post')) {
+          const post = allPosts.find(p => p.slug === params.get('post'));
+          if (post) showArticle(post);
+        }
+      } catch(e) {
+        showEmpty();
+      }
+    }
+
+    function renderPosts(posts) {
+      const grid = document.getElementById('blog-grid');
+      if (posts.length === 0) { showEmpty(); return; }
+      grid.innerHTML = posts.map(p => `
+        <div class="blog-card" onclick="showArticle(allPosts.find(x=>x.slug==='${p.slug}'))">
+          ${p.thumbnail
+            ? `<img class="blog-card__img" src="${p.thumbnail}" alt="${p.title}" />`
+            : `<div class="blog-card__img-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#c4a5ce" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg></div>`
+          }
+          <div class="blog-card__body">
+            <span class="blog-card__category">${p.category || 'TMS'}</span>
+            <div class="blog-card__title">${p.title || 'Sin título'}</div>
+            <div class="blog-card__date">${formatDate(p.date)}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showEmpty() {
+      document.getElementById('blog-grid').innerHTML = `
+        <div class="blog-empty" style="grid-column:1/-1">
+          <p>Próximamente — el blog está en construcción.</p>
+        </div>`;
+    }
+
+    function filterPosts(category, btn) {
+      currentFilter = category;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filtered = category === 'all' ? allPosts : allPosts.filter(p => p.category === category);
+      renderPosts(filtered);
+    }
+
+    function showArticle(post) {
+      if (!post) return;
+      document.getElementById('article-category').textContent = post.category || 'TMS';
+      document.getElementById('article-title').textContent = post.title || '';
+      document.getElementById('article-date').textContent = formatDate(post.date);
+      const img = document.getElementById('article-img');
+      if (post.thumbnail) { img.src = post.thumbnail; img.alt = post.title; img.style.display = 'block'; }
+      else { img.style.display = 'none'; }
+      document.getElementById('article-body').innerHTML = marked.parse(post.body || '');
+      document.getElementById('blog-list').style.display = 'none';
+      document.getElementById('blog-list-header').style.display = 'none';
+      document.getElementById('blog-filters').style.display = 'none';
+      document.getElementById('article-view').classList.add('visible');
+      window.scrollTo(0, 0);
+      history.pushState({}, '', `/blog.html?post=${post.slug}`);
+    }
+
+    function showList() {
+      document.getElementById('blog-list').style.display = 'block';
+      document.getElementById('blog-list-header').style.display = 'block';
+      document.getElementById('blog-filters').style.display = 'flex';
+      document.getElementById('article-view').classList.remove('visible');
+      history.pushState({}, '', '/blog.html');
+    }
+
+    function parseFrontmatter(text) {
+      const match = text.match(/^---\n([\s\S]*?)\n---/);
+      if (!match) return {};
+      const obj = {};
+      match[1].split('\n').forEach(line => {
+        const [k, ...v] = line.split(':');
+        if (k && v.length) obj[k.trim()] = v.join(':').trim().replace(/^["']|["']$/g,'');
+      });
+      return obj;
+    }
+
+    function formatDate(str) {
+      if (!str) return '';
+      try { return new Date(str).toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' }); }
+      catch { return str; }
+    }
+
+    loadPosts();
+  </script>
+
+</body>
+</html>
